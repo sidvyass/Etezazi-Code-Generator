@@ -4,9 +4,11 @@ This simple GUI is desgined to simplify the in-house code generation process tha
 
 ## Running the app
 
-For ease of distribution this app has been packaged via Pyinstaller. To run the app without the package, simply install requirements.txt and run ~python src\main.py~ from the terminal.
+For ease of distribution this app has been packaged via Pyinstaller. To run the app without the package, simply install requirements.txt and run `python src\main.py` from the terminal.
 
-### disclaimer
+The executeable is found under 'dist' that can be installed and run on any windows machine.
+
+### Disclaimer
 
 This software, developed by Etezazi Industries, is intended for internal use only and is not designed for or intended for use by the general public. The software is provided 'as is' without warranty of any kind, either expressed or implied. Etezazi Industries disclaims all liability for any damage or issues that may result from using this software.
 
