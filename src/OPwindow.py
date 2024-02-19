@@ -3,6 +3,10 @@ from tkinter import Frame
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.font as tkFont
+import logging_config
+import logging
+
+logger = logging.getLogger(__name__)
 
 class OPframe(Frame):
     def __init__(self, parent, callback, cert_dict, op_or_ht):

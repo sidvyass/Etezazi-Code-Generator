@@ -1,10 +1,15 @@
 import pyodbc
 from tkinter import messagebox
+import logging
+
+# only active for when we are trying to push something to the database
+logger = logging.getLogger(__name__)
 
 class MieTrak:
     def __init__(self):
         _conn_string = "DRIVER={SQL Server};SERVER=ETZ-SQL;DATABASE=SANDBOX;Trusted_Connection=yes;"
         self.conn = pyodbc.connect(_conn_string)
+        logger.info(f"connected to database {_conn_string}")
         self.cursor = self.conn.cursor()
     
     def pull_part_numbers(self, part_number: str) -> list:
@@ -30,23 +35,27 @@ class MieTrak:
         query = "SELECT itemclassPK FROM itemclass WHERE name=(?)"
         self.cursor.execute(query, code)
         results = self.cursor.fetchall()
-        if len(results) > 0:
-            self.itemclassfk = results[0][0]  # enter it into the database
-        else:
-            insert_code = "INSERT INTO itemclass (name) VALUES (?)"
-            self.cursor.execute(insert_code, code)
+        try:
+            if len(results) > 0:
+                self.itemclassfk = results[0][0]  # enter it into the database
+                logger.info(f"code selected found in database - {self.itemclassfk}")
+            else:
+                insert_code = "INSERT INTO itemclass (name) VALUES (?)"
+                self.cursor.execute(insert_code, code)
+                self.conn.commit()
+                get_code = "SELECT itemclassPK FROM itemclass WHERE name=(?)"  # pass code
+                self.cursor.execute(get_code, code)  # this could give errors
+                self.itemclassfk = self.cursor.fetchall()[0][0]
+                logger.info(f"code NOT found in database, insert successful - {self.itemclassfk}")
+            
+            # updating item 
+            description = "OP HT" if len(code) < 22 else "OP"
+            query_to_update_item = "UPDATE item SET itemclassFK=(?), description=(?) WHERE itemPK=(?);"
+            self.cursor.execute(query_to_update_item, (self.itemclassfk, description, itempk))
             self.conn.commit()
-            get_code = "SELECT itemclassPK FROM itemclass WHERE name=(?)"  # pass code
-            self.cursor.execute(get_code, code)  # this could give errors
-            self.itemclassfk = self.cursor.fetchall()[0][0]
-        
-        # updating item 
-        description = "OP HT" if len(code) < 22 else "OP"
-        query_to_update_item = "UPDATE item SET itemclassFK=(?), description=(?) WHERE itemPK=(?);"
-        self.cursor.execute(query_to_update_item, (self.itemclassfk, description, itempk))
-        self.conn.commit()
-        messagebox.showinfo(title="Success!", message="Import Successfull!")
-
+            messagebox.showinfo(title="Success!", message="Import Successfull!")
+        except pyodbc.Error as e:
+            logging.critical(f"Database connection error , no changes processed {e}", exc_info=True)
 
 # testing - do not change or touch
 if __name__=="__main__":

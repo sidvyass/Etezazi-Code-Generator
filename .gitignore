@@ -1,1 +1,5 @@
 task_log.txt
+src/code-gen/
+src/logs/
+src/__pycache__/
+configs/icon.ico

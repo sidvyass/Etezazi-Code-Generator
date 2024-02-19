@@ -6,9 +6,13 @@ from database_conn import MieTrak
 import pulling_specs
 from main_specs import certs_dict, ht_certs_dict  # change this so that it lives in configs
 from tkinter import messagebox
+import logging
+
+logger = logging.getLogger(__name__)
 
 class MainApp(tk.Tk):
     def __init__(self):
+        logger.info("Starting the application")
         super().__init__()
         self.title("Code Gen")
         self.geometry("1000x800")
@@ -54,8 +58,7 @@ class MainApp(tk.Tk):
         self.upper_frame.columnconfigure(1, weight=6)
         self.upper_frame.columnconfigure(2, weight=3)
 
-        # need to resize this - code broke
-        image = Image.open(r"C:\Users\svyas.ETEZAZI\PycharmProjects\GUI_code_gen\code_gen\configs\Etezazi_Logo.jpg", mode='r')
+        image = Image.open(r"C:\pythonprojects\Etezazi-Code-Generator\configs\Etezazi_Logo.jpg", mode='r')
         final_image = image.resize((70, 50))
         self.tk_image = ImageTk.PhotoImage(final_image)
         tk.Label(self.upper_frame, image=self.tk_image, background="white").grid(row=0, column=0, sticky="WE", padx=5)
@@ -86,8 +89,8 @@ class MainApp(tk.Tk):
     def get_code_from_op_ht(self, code):
         if self.part_number:
             self.code = code
-            print(self.itempk, self.code)
             self.db_handler.push_finish_code_itemclass(self.code, self.itempk)
+            logging.info(f"Pushed to database, ItemPK - {self.itempk}, Code generated - {self.code}")
             self.middle_frame_config()
             self.ht_button.config(state="normal", background="white")
             self.op_button.config(state="normal", background="white")
