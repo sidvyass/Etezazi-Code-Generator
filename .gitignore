@@ -3,3 +3,6 @@ src/code-gen/
 src/logs/
 src/__pycache__/
 configs/icon.ico
+dist/
+logs/
+build/

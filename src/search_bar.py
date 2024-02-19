@@ -2,9 +2,13 @@ import time
 import tkinter as tk
 from tkinter import messagebox 
 from database_conn import MieTrak
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SearchBar(tk.Toplevel):
     def __init__(self, parent, callback):
+        logger.info("search app started")
         super().__init__(parent)
         self.callback = callback  # main app function
         self.title("Search Bar")
@@ -49,9 +53,11 @@ class SearchBar(tk.Toplevel):
         try:
             part_number_index = event.widget.curselection()[0]
             if part_number_index or part_number_index == 0:  # without zero, python thinks this statement is false
-                part = self.part_num_list[part_number_index]
+                part = self.part_num_list[part_number_index - 1]
                 if messagebox.askokcancel(title="confirm", message=f"Part Number - {part[1]}, description - {part[2]}"):
                     self.callback(part)  # we run that function before we destory the widget
+                    logger.info(f"part selected by user - {part}")
                     self.destroy()
         except IndexError as e:  # in case someone clicks on an empty list box without it being populated
+            logger.error("user clicked on empty list box")
             print(f"Index out of range, try again - {e}")
