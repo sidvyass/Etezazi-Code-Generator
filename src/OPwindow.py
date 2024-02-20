@@ -3,7 +3,6 @@ from tkinter import Frame
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter.font as tkFont
-import logging_config
 import logging
 
 logger = logging.getLogger(__name__)

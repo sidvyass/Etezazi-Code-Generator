@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 class MieTrak:
     def __init__(self):
-        _conn_string = "DRIVER={SQL Server};SERVER=ETZ-SQL;DATABASE=SANDBOX;Trusted_Connection=yes;"
+        _conn_string = "DRIVER={SQL Server};SERVER=ETZ-SQL;DATABASE=ETEZAZIMIETrakLive;Trusted_Connection=yes;"
         self.conn = pyodbc.connect(_conn_string)
         logger.info(f"connected to database {_conn_string}")
         self.cursor = self.conn.cursor()

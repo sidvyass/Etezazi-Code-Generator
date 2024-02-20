@@ -3,11 +3,10 @@ from PIL import ImageTk, Image
 from search_bar import SearchBar
 from OPwindow import OPframe
 from database_conn import MieTrak
-import pulling_specs
+import pulling_specs # do not remove
 from main_specs import certs_dict, ht_certs_dict  # change this so that it lives in configs
 from tkinter import messagebox
 import logging
-from resource_paths import logo_path
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +58,7 @@ class MainApp(tk.Tk):
         self.upper_frame.columnconfigure(1, weight=6)
         self.upper_frame.columnconfigure(2, weight=3)
 
-        image = Image.open(logo_path, mode='r')
+        image = Image.open(r"Z:\Etezazi_LOGO.png", mode='r')
         final_image = image.resize((70, 50))
         self.tk_image = ImageTk.PhotoImage(final_image)
         tk.Label(self.upper_frame, image=self.tk_image, background="white").grid(row=0, column=0, sticky="WE", padx=5)

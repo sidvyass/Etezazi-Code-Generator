@@ -6,3 +6,5 @@ configs/icon.ico
 dist/
 logs/
 build/
+pyinstaller-6.4.0.zip
+pyinstaller-6.4.0
